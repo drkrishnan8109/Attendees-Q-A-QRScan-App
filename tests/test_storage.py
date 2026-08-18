@@ -60,9 +60,13 @@ class StorageQuestionTests(unittest.TestCase):
             [question.public_id for question in questions],
             [first_question.public_id, second_question.public_id],
         )
-        self.assertTrue(all(question.room_id == first_room.public_id for question in questions))
+        self.assertTrue(
+            all(question.room_id == first_room.public_id for question in questions)
+        )
         self.assertTrue(all(question.like_count == 0 for question in questions))
-        self.assertTrue(all(question.liked_by_viewer is False for question in questions))
+        self.assertTrue(
+            all(question.liked_by_viewer is False for question in questions)
+        )
 
     def test_question_creation_rejects_an_unknown_room(self) -> None:
         with self.assertRaises(RoomNotFoundError):
@@ -85,7 +89,9 @@ class ReactionTests(unittest.TestCase):
     def test_a_viewer_can_like_and_unlike_one_question(self) -> None:
         viewer_id = "a" * 32
 
-        self.assertTrue(self.database.toggle_reaction(self.question.public_id, viewer_id))
+        self.assertTrue(
+            self.database.toggle_reaction(self.question.public_id, viewer_id)
+        )
         liked_question = self.database.list_questions(
             self.room.public_id,
             viewer_id=viewer_id,
@@ -93,7 +99,9 @@ class ReactionTests(unittest.TestCase):
         self.assertEqual(liked_question.like_count, 1)
         self.assertTrue(liked_question.liked_by_viewer)
 
-        self.assertFalse(self.database.toggle_reaction(self.question.public_id, viewer_id))
+        self.assertFalse(
+            self.database.toggle_reaction(self.question.public_id, viewer_id)
+        )
         unliked_question = self.database.list_questions(
             self.room.public_id,
             viewer_id=viewer_id,
@@ -141,7 +149,9 @@ class BackupTests(unittest.TestCase):
 
         summary = restored_database.restore_backup_json(payload)
 
-        self.assertEqual((summary.rooms, summary.questions, summary.reactions), (1, 1, 1))
+        self.assertEqual(
+            (summary.rooms, summary.questions, summary.reactions), (1, 1, 1)
+        )
         self.assertEqual(restored_database.list_rooms(), [self.room])
         restored_question = restored_database.list_questions(
             self.room.public_id,

@@ -359,10 +359,7 @@ class QADatabase:
         writer = csv.DictWriter(output, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(
-            {
-                field: csv_safe_cell(value)
-                for field, value in dict(row).items()
-            }
+            {field: csv_safe_cell(value) for field, value in dict(row).items()}
             for row in rows
         )
         return output.getvalue()
@@ -437,7 +434,11 @@ class QADatabase:
     @staticmethod
     def _parse_backup(
         payload: bytes | str,
-    ) -> tuple[list[Mapping[str, object]], list[Mapping[str, object]], list[Mapping[str, object]]]:
+    ) -> tuple[
+        list[Mapping[str, object]],
+        list[Mapping[str, object]],
+        list[Mapping[str, object]],
+    ]:
         text = QADatabase._decode_backup(payload)
         try:
             document = json.loads(text)
@@ -475,7 +476,9 @@ class QADatabase:
             try:
                 return payload.decode("utf-8")
             except UnicodeDecodeError as error:
-                raise BackupFormatError("The backup must use UTF-8 encoding.") from error
+                raise BackupFormatError(
+                    "The backup must use UTF-8 encoding."
+                ) from error
         if isinstance(payload, str):
             if len(payload.encode("utf-8")) > MAX_BACKUP_BYTES:
                 raise BackupFormatError("The backup is larger than 1 MB.")
@@ -483,7 +486,9 @@ class QADatabase:
         raise BackupFormatError("The backup must be a JSON file.")
 
     @staticmethod
-    def _bounded_list(value: object, *, label: str, limit: int) -> list[Mapping[str, object]]:
+    def _bounded_list(
+        value: object, *, label: str, limit: int
+    ) -> list[Mapping[str, object]]:
         if not isinstance(value, list) or len(value) > limit:
             raise BackupFormatError(f"The backup has an invalid number of {label}.")
         if not all(isinstance(item, dict) for item in value):
@@ -516,9 +521,13 @@ class QADatabase:
                 QADatabase._validate_timestamp(question["created_at"])
                 sort_order = question["sort_order"]
                 if type(sort_order) is not int or sort_order < 1:
-                    raise BackupFormatError("Question order values must be positive integers.")
+                    raise BackupFormatError(
+                        "Question order values must be positive integers."
+                    )
                 if room_id not in room_ids:
-                    raise BackupFormatError("A backup question references an unknown room.")
+                    raise BackupFormatError(
+                        "A backup question references an unknown room."
+                    )
                 if question_id in question_ids or sort_order in sort_orders:
                     raise BackupFormatError("The backup contains duplicate questions.")
                 question_ids.add(question_id)
@@ -530,7 +539,9 @@ class QADatabase:
                 QADatabase._validate_timestamp(reaction["created_at"])
                 reaction_key = (question_id, viewer_id)
                 if question_id not in question_ids:
-                    raise BackupFormatError("A reaction references an unknown question.")
+                    raise BackupFormatError(
+                        "A reaction references an unknown question."
+                    )
                 if reaction_key in reaction_keys:
                     raise BackupFormatError("The backup contains duplicate reactions.")
                 reaction_keys.add(reaction_key)
@@ -544,7 +555,9 @@ class QADatabase:
         try:
             datetime.fromisoformat(value.removesuffix("Z") + "+00:00")
         except ValueError as error:
-            raise BackupFormatError("The backup contains an invalid timestamp.") from error
+            raise BackupFormatError(
+                "The backup contains an invalid timestamp."
+            ) from error
         return value
 
     @staticmethod
@@ -565,6 +578,7 @@ class QADatabase:
             like_count=int(row["like_count"]),
             liked_by_viewer=bool(row["liked_by_viewer"]),
         )
+
 
 __all__ = [
     "BackupConflictError",

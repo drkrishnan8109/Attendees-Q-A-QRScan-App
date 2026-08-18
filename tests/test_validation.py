@@ -25,7 +25,9 @@ class RoomTitleValidationTests(unittest.TestCase):
 
 class QuestionValidationTests(unittest.TestCase):
     def test_preserves_safe_multiline_plain_text(self) -> None:
-        self.assertEqual(validate_question("  First line\nSecond line  "), "First line\nSecond line")
+        self.assertEqual(
+            validate_question("  First line\nSecond line  "), "First line\nSecond line"
+        )
 
     def test_rejects_an_empty_question(self) -> None:
         with self.assertRaisesRegex(ValidationError, "question"):
