@@ -24,3 +24,12 @@ class Question:
     created_at: str
     like_count: int = 0
     liked_by_viewer: bool = False
+
+
+@dataclass(frozen=True, slots=True)
+class ImportSummary:
+    """Counts restored from a complete JSON backup."""
+
+    rooms: int
+    questions: int
+    reactions: int
