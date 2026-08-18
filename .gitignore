@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Streamlit and local secrets
+.streamlit/secrets.toml
+.env
+.env.*
+!.env.example
+
+# Runtime data and exports
+.qa_data/
+*.sqlite
+*.sqlite3
+*.db
+
+# OS and editors
+.DS_Store
+.idea/
+.vscode/
