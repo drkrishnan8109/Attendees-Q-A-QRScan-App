@@ -60,6 +60,9 @@ class MarkdownEscapingTests(unittest.TestCase):
         escaped = r"\*\*bold\*\* \[link\]\(https://example\.com\) \<script\>"
         self.assertEqual(escape_markdown(source), escaped)
 
+    def test_escapes_inline_math_markers(self) -> None:
+        self.assertEqual(escape_markdown("Does $x$ equal 2?"), r"Does \$x\$ equal 2?")
+
 
 if __name__ == "__main__":
     unittest.main()

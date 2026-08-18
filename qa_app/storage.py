@@ -283,6 +283,9 @@ class QADatabase:
         """Return a complete, restorable versioned backup."""
 
         with self._connect() as connection:
+            # Keep rooms, questions, and reactions on one read snapshot while
+            # audience sessions continue writing through their own connections.
+            connection.execute("BEGIN")
             rooms = [
                 dict(row)
                 for row in connection.execute(

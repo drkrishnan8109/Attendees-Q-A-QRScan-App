@@ -64,7 +64,7 @@ def render_audience(database: QADatabase, room_parameter: object) -> None:
         else:
             st.success("Your question was added.")
 
-    st.subheader("Questions")
+    st.header("Questions")
     st.caption("Oldest questions appear first. The list updates automatically.")
     render_question_feed(
         database.path,

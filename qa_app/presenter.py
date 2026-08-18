@@ -81,7 +81,7 @@ def _render_login(configured_password: object) -> bool:
 
 
 def _create_room(database: QADatabase) -> None:
-    st.subheader("Presentation rooms")
+    st.header("Presentation rooms")
     with st.form("create_room_form", border=True, clear_on_submit=True):
         title = st.text_input(
             "Room name",
@@ -146,6 +146,7 @@ def _render_live_room(database: QADatabase, room: Room) -> None:
         st.error(str(error))
         return
 
+    st.header(room.title)
     question_count = len(database.list_questions(room.public_id))
     details, qr_column = st.columns([3, 2], vertical_alignment="top")
     with details:

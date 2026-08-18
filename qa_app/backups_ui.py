@@ -11,7 +11,7 @@ from qa_app.storage import BackupConflictError, BackupFormatError, QADatabase
 def render_backups(database: QADatabase, rooms: list[Room]) -> None:
     """Render safe exports and an empty-database-only restore workflow."""
 
-    st.subheader("Backups")
+    st.header("Backups")
     st.warning(
         "Community Cloud can delete local SQLite data during a restart or redeploy. "
         "Download a JSON backup after each presentation."
@@ -36,7 +36,7 @@ def render_backups(database: QADatabase, rooms: list[Room]) -> None:
             use_container_width=True,
         )
 
-    st.markdown("#### Restore a JSON backup")
+    st.subheader("Restore a JSON backup")
     if rooms:
         st.info(
             "Restore becomes available when this app database is empty. This prevents "

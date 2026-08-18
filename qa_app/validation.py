@@ -10,7 +10,7 @@ QUESTION_MAX_LENGTH = 280
 
 _PUBLIC_ID_PATTERN = re.compile(r"^[A-Za-z0-9_-]{8,64}$")
 _VIEWER_ID_PATTERN = re.compile(r"^[a-f0-9]{32}$")
-_MARKDOWN_SPECIAL_CHARACTERS = frozenset(r"\`*_{}[]<>()#+-.!|>~")
+_MARKDOWN_SPECIAL_CHARACTERS = frozenset(r"\`*_{}[]<>()#+-.!|>~$")
 
 
 class ValidationError(ValueError):
