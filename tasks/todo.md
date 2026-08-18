@@ -3,9 +3,9 @@
 ## Task 1: Project and validation foundation
 
 **Acceptance criteria:**
-- [ ] Runtime and development dependencies are pinned.
-- [ ] Secrets and generated data are ignored.
-- [ ] Room titles, questions, room IDs, and viewer IDs are validated.
+- [x] Runtime and development dependencies are pinned.
+- [x] Secrets and generated data are ignored.
+- [x] Room titles, questions, room IDs, and viewer IDs are validated.
 
 **Verification:** `python3 -m unittest tests.test_validation -v`
 
@@ -16,9 +16,9 @@
 ## Task 2: Rooms and chronological questions
 
 **Acceptance criteria:**
-- [ ] Multiple rooms persist with distinct opaque IDs.
-- [ ] Questions are isolated by room.
-- [ ] Questions return oldest first with deterministic tie ordering.
+- [x] Multiple rooms persist with distinct opaque IDs.
+- [x] Questions are isolated by room.
+- [x] Questions return oldest first with deterministic tie ordering.
 
 **Verification:** `python3 -m unittest tests.test_storage.StorageQuestionTests -v`
 
@@ -29,9 +29,9 @@
 ## Task 3: Reactions and backups
 
 **Acceptance criteria:**
-- [ ] A voter toggles each question between liked and unliked.
-- [ ] The database cannot store duplicate likes.
-- [ ] JSON export/import round-trips rooms, questions, and reactions.
+- [x] A voter toggles each question between liked and unliked.
+- [x] The database cannot store duplicate likes.
+- [x] JSON export/import round-trips rooms, questions, and reactions.
 
 **Verification:** `python3 -m unittest tests.test_storage -v`
 
@@ -42,9 +42,9 @@
 ## Task 4: Audience flow
 
 **Acceptance criteria:**
-- [ ] Valid QR links open a password-free audience room.
-- [ ] Questions can be submitted and reactions toggled.
-- [ ] The question list refreshes live and remains chronological.
+- [x] Valid QR links open a password-free audience room.
+- [x] Questions can be submitted and reactions toggled.
+- [x] The question list refreshes live and remains chronological.
 
 **Verification:** headless Streamlit startup and manual narrow-viewport check
 
@@ -55,9 +55,9 @@
 ## Task 5: Presenter flow and QR
 
 **Acceptance criteria:**
-- [ ] Invalid secrets do not unlock presenter controls.
-- [ ] The presenter can create/select rooms and see live questions.
-- [ ] Each selected room displays a unique working QR code.
+- [x] Invalid secrets do not unlock presenter controls.
+- [x] The presenter can create/select rooms and see live questions.
+- [x] Each selected room displays a unique working QR code.
 
 **Verification:** headless Streamlit startup and manual presenter-flow check
 
@@ -68,9 +68,9 @@
 ## Task 6: Backup controls and documentation
 
 **Acceptance criteria:**
-- [ ] Presenter can download full JSON and readable CSV.
-- [ ] Presenter can import a bounded valid JSON backup.
-- [ ] Local and Community Cloud setup are documented without committed secrets.
+- [x] Presenter can download full JSON and readable CSV.
+- [x] Presenter can import a bounded valid JSON backup.
+- [x] Local and Community Cloud setup are documented without committed secrets.
 
 **Verification:** full tests plus README setup walkthrough
 
@@ -81,8 +81,8 @@
 ## Task 7: Quality gate
 
 **Acceptance criteria:**
-- [ ] Tests, lint, formatting, compilation, and startup checks pass.
-- [ ] Security and five-axis review have no unresolved required findings.
+- [x] Tests, lint, formatting, compilation, and startup checks pass.
+- [x] Security and five-axis review have no unresolved required findings.
 
 **Verification:** commands in `docs/spec.md`
 

@@ -23,37 +23,37 @@ kept independently testable.
 
 ### Phase 1: Foundation
 
-- [ ] Task 1: Add project configuration, documentation, and validation tests.
-- [ ] Task 2: Implement room and question persistence with chronological queries.
-- [ ] Task 3: Implement transactional reaction toggling and backup round-tripping.
+- [x] Task 1: Add project configuration, documentation, and validation tests.
+- [x] Task 2: Implement room and question persistence with chronological queries.
+- [x] Task 3: Implement transactional reaction toggling and backup round-tripping.
 
 ### Checkpoint: Foundation
 
-- [ ] Unit and SQLite integration tests pass.
-- [ ] Schema and input boundaries match the approved specification.
+- [x] Unit and SQLite integration tests pass.
+- [x] Schema and input boundaries match the approved specification.
 
 ### Phase 2: Core User Flows
 
-- [ ] Task 4: Build anonymous audience submission, live question list, and reactions.
-- [ ] Task 5: Build protected presenter room creation, room selection, live view, and QR.
-- [ ] Task 6: Add JSON backup import and JSON/CSV downloads.
+- [x] Task 4: Build anonymous audience submission, live question list, and reactions.
+- [x] Task 5: Build protected presenter room creation, room selection, live view, and QR.
+- [x] Task 6: Add JSON backup import and JSON/CSV downloads.
 
 ### Checkpoint: Core Flows
 
-- [ ] Audience URL works without authentication.
-- [ ] Presenter actions require the configured secret.
-- [ ] Two browser sessions see live updates.
+- [x] Audience URL works without authentication.
+- [x] Presenter actions require the configured secret.
+- [x] Two browser sessions share persisted state and live-refresh independently.
 
 ### Phase 3: Polish and Verification
 
-- [ ] Task 7: Add responsive styling, empty/error states, and deployment instructions.
-- [ ] Task 8: Run lint, format, compile, tests, startup, security, and five-axis review.
+- [x] Task 7: Add responsive styling, empty/error states, and deployment instructions.
+- [x] Task 8: Run lint, format, compile, tests, startup, security, and five-axis review.
 
 ### Checkpoint: Complete
 
-- [ ] All success criteria pass.
-- [ ] No secret or generated database is tracked.
-- [ ] The app is ready for a Community Cloud deployment.
+- [x] All success criteria pass.
+- [x] No secret or generated database is tracked.
+- [x] The app is ready for a Community Cloud deployment.
 
 ## Risks and Mitigations
 
