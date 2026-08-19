@@ -1,0 +1,30 @@
+[project]
+name = "household-budget"
+version = "0.1.0"
+description = "Mobile-first household budgeting app built with Streamlit"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas>=2.2,<4",
+    "psycopg[binary]>=3.2,<4",
+    "sqlalchemy>=2.0,<3",
+    "streamlit>=1.61.1,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.4,<9",
+    "ruff>=0.12,<1",
+]
+
+[tool.pytest.ini_options]
+addopts = "-q"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
