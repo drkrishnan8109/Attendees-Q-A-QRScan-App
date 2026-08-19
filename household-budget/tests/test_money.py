@@ -3,7 +3,12 @@ from decimal import Decimal
 
 import pytest
 
-from budget_app.money import AmountError, format_money, parse_amount_to_cents
+from budget_app.money import (
+    AmountError,
+    format_money,
+    parse_amount_to_cents,
+    parse_balance_to_cents,
+)
 from budget_app.retention import retention_cutoff
 
 
@@ -37,6 +42,16 @@ def test_parse_amount_to_cents_rejects_invalid_values(raw_amount):
 )
 def test_format_money_uses_the_household_currency(cents, currency, expected):
     assert format_money(cents, currency) == expected
+
+
+@pytest.mark.parametrize(("raw_amount", "expected_cents"), [("0", 0), ("50.25", 5_025)])
+def test_parse_balance_to_cents_allows_zero(raw_amount, expected_cents):
+    assert parse_balance_to_cents(raw_amount) == expected_cents
+
+
+def test_parse_balance_to_cents_rejects_negative_values():
+    with pytest.raises(AmountError):
+        parse_balance_to_cents("-0.01")
 
 
 def test_retention_cutoff_is_six_calendar_months_and_clamps_month_end():

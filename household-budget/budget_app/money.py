@@ -18,6 +18,19 @@ class AmountError(ValueError):
 
 def parse_amount_to_cents(raw_amount: str | int | float | Decimal) -> int:
     """Convert a positive decimal amount to exact integer minor units."""
+    return _parse_to_cents(raw_amount, allow_zero=False)
+
+
+def parse_balance_to_cents(raw_amount: str | int | float | Decimal) -> int:
+    """Convert a nonnegative opening balance to exact integer minor units."""
+    return _parse_to_cents(raw_amount, allow_zero=True)
+
+
+def _parse_to_cents(
+    raw_amount: str | int | float | Decimal,
+    *,
+    allow_zero: bool,
+) -> int:
     if isinstance(raw_amount, str) and not raw_amount.strip():
         raise AmountError("Enter an amount.")
 
@@ -26,8 +39,10 @@ def parse_amount_to_cents(raw_amount: str | int | float | Decimal) -> int:
     except (InvalidOperation, ValueError) as exc:
         raise AmountError("Enter a valid amount.") from exc
 
-    if not amount.is_finite() or amount <= 0:
-        raise AmountError("Amount must be greater than zero.")
+    minimum_is_valid = amount >= 0 if allow_zero else amount > 0
+    if not amount.is_finite() or not minimum_is_valid:
+        requirement = "zero or more" if allow_zero else "greater than zero"
+        raise AmountError(f"Amount must be {requirement}.")
 
     try:
         rounded_amount = amount.quantize(MINOR_UNIT)
