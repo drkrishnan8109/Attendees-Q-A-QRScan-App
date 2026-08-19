@@ -63,7 +63,7 @@ def _render_login(configured_password: object) -> bool:
             "Sign in",
             key="presenter_login",
             type="primary",
-            use_container_width=True,
+            width="stretch",
             disabled=remaining > 0,
         )
 
@@ -93,7 +93,7 @@ def _create_room(database: QADatabase) -> None:
             "Create room",
             key="create_room",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         )
     if submitted:
         try:
@@ -156,7 +156,7 @@ def _render_live_room(database: QADatabase, room: Room) -> None:
         st.link_button(
             "Open audience view",
             audience_url,
-            use_container_width=True,
+            width="stretch",
         )
         st.metric("Questions received", question_count)
     with qr_column:
@@ -183,7 +183,7 @@ def render_presenter(database: QADatabase, configured_password: object) -> None:
     with header:
         st.caption("LIVE Q&A CONTROL ROOM")
     with action:
-        if st.button("Sign out", key="presenter_logout", use_container_width=True):
+        if st.button("Sign out", key="presenter_logout", width="stretch"):
             st.session_state["presenter_authenticated"] = False
             st.rerun()
 

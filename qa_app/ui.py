@@ -91,7 +91,7 @@ def render_question_feed(
                             help="Unlike this question"
                             if question.liked_by_viewer
                             else "Like this question",
-                            use_container_width=True,
+                            width="stretch",
                         ):
                             try:
                                 database.toggle_reaction(question.public_id, viewer_id)

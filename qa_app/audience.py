@@ -53,7 +53,7 @@ def render_audience(database: QADatabase, room_parameter: object) -> None:
             "Send question",
             key="submit_question",
             type="primary",
-            use_container_width=True,
+            width="stretch",
         )
 
     if submitted:

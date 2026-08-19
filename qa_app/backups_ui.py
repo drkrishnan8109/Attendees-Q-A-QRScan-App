@@ -24,7 +24,7 @@ def render_backups(database: QADatabase, rooms: list[Room]) -> None:
             file_name="live-qa-backup.json",
             mime="application/json",
             key="download_json",
-            use_container_width=True,
+            width="stretch",
         )
     with downloads[1]:
         st.download_button(
@@ -33,7 +33,7 @@ def render_backups(database: QADatabase, rooms: list[Room]) -> None:
             file_name="live-qa-questions.csv",
             mime="text/csv",
             key="download_csv",
-            use_container_width=True,
+            width="stretch",
         )
 
     st.subheader("Restore a JSON backup")
