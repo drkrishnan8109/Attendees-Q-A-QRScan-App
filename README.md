@@ -17,47 +17,91 @@ anonymous browser token. Questions always remain in oldest-first order.
 - Complete JSON backup/restore and readable, formula-safe CSV export
 - Input validation, parameterized SQL, bounded uploads, and temporary login lockouts
 
-## Run locally
+## Quick start
 
-Python 3.12 or newer is recommended.
+Python 3.12 is recommended. From a fresh checkout:
 
 ```bash
+git clone https://github.com/drkrishnan8109/Attendees-Q-A-QRScan-App.git
+cd Attendees-Q-A-QRScan-App
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install --only-binary=:all: -r requirements-dev.txt
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
 cp .streamlit/secrets.toml.example .streamlit/secrets.toml
-streamlit run streamlit_app.py
 ```
 
-Edit `.streamlit/secrets.toml` before signing in:
+Open `.streamlit/secrets.toml` and replace the example presenter password. It must
+contain at least 12 characters:
 
 ```toml
 presenter_password = "use-a-long-random-password-here"
 ```
 
-The local database is created at `.qa_data/questions.sqlite3`. Both it and the real
-secrets file are ignored by Git.
+Start the app:
+
+```bash
+python -m streamlit run streamlit_app.py
+```
+
+Open <http://127.0.0.1:8501>. Stop the server with `Ctrl+C`. If port 8501 is already
+in use, choose another port:
+
+```bash
+python -m streamlit run streamlit_app.py --server.port 8502
+```
+
+The SQLite database is created at `.qa_data/questions.sqlite3`. The database, virtual
+environment, Python caches, and real secrets file are ignored by Git.
+
+### Development setup and checks
+
+Install the development dependencies instead of the runtime-only set:
+
+```bash
+python -m pip install -r requirements-dev.txt
+```
+
+Run the complete local quality gate:
+
+```bash
+python -m unittest discover -s tests -v
+ruff check .
+ruff format --check .
+python -m compileall -q qa_app streamlit_app.py tests
+```
 
 ### Let phones reach a locally running app
 
-If the laptop and phones share a Wi-Fi network, start Streamlit on all interfaces and
-configure the QR base URL with the laptop's LAN address:
+If the laptop and phones share a Wi-Fi network, first find the laptop's LAN address.
+On macOS, Wi-Fi commonly uses `en0`:
 
 ```bash
-streamlit run streamlit_app.py --server.address 0.0.0.0
+ipconfig getifaddr en0
 ```
+
+Then start Streamlit on all interfaces:
+
+```bash
+python -m streamlit run streamlit_app.py --server.address 0.0.0.0
+```
+
+Add the same address and Streamlit port to `.streamlit/secrets.toml` so generated QR
+codes point to an address attendees can reach:
 
 ```toml
 app_base_url = "http://192.168.1.25:8501/"
 ```
 
-Replace the example address with the laptop's current LAN address. Some corporate or
-guest networks block communication between devices; Community Cloud avoids that
-network limitation.
+Replace the example address with the value reported on your laptop. Test the link on
+a phone before presenting. macOS may ask whether Python can accept incoming network
+connections. Some corporate or guest networks isolate devices from one another; use
+a hosted deployment when that happens.
 
 ## Deploy on Streamlit Community Cloud
 
-1. Push this repository to GitHub.
+1. Push this repository to GitHub. Do not commit `.streamlit/secrets.toml` or
+   `.qa_data/`.
 2. In [Streamlit Community Cloud](https://share.streamlit.io/), create an app from the
    repository and choose `streamlit_app.py` as the entry point.
 3. In the app's advanced settings, add this secret:
@@ -104,18 +148,23 @@ database file to a safe backup location first; then restart and upload the JSON.
 
 Attendees only need the QR link. They never see room creation or backup controls.
 
-## Verify changes
-
-```bash
-python -m unittest discover -s tests -v
-ruff check .
-ruff format --check .
-python -m compileall -q qa_app streamlit_app.py tests
-```
-
-The tests cover validation, chronological ordering, room isolation, reaction
+The tests cover packaging, validation, chronological ordering, room isolation, reaction
 toggling, JSON round-trips, safe CSV export, presenter authentication, room creation,
 and the complete audience submit/react flow through Streamlit's native app harness.
+
+## Troubleshooting
+
+- **Presenter password is not configured:** create `.streamlit/secrets.toml` from the
+  included example and use a password of at least 12 characters.
+- **The QR code opens the wrong address:** set `app_base_url` to the exact URL that
+  attendee devices use, including a non-default port.
+- **A phone cannot connect:** confirm both devices use the same network, use the
+  laptop's LAN address rather than `localhost`, and allow incoming connections in the
+  firewall.
+- **Port 8501 is busy:** pass `--server.port 8502` and use that same port in
+  `app_base_url`.
+- **Community Cloud lost questions after a restart:** restore the most recent JSON
+  backup; local SQLite storage on Community Cloud is not guaranteed durable.
 
 ## Intentional MVP limits
 
