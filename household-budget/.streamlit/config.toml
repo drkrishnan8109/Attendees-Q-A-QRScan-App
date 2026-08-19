@@ -1,0 +1,7 @@
+[client]
+showErrorDetails = "none"
+toolbarMode = "minimal"
+
+[server]
+headless = true
+

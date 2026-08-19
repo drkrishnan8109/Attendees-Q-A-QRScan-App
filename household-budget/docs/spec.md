@@ -14,7 +14,7 @@ The first release is a single-household app with no built-in login. It is intend
 ## Tech stack
 
 - Python 3.12+
-- Streamlit 1.60+
+- Streamlit 1.61.1+
 - SQLAlchemy 2.x
 - PostgreSQL through `psycopg` in production (Supabase Free)
 - SQLite only as a local-development fallback
@@ -38,7 +38,7 @@ budget_app/            Tested domain and persistence code
 tests/                 Unit, database integration, and AppTest tests
 docs/decisions/        Architecture decision records
 tasks/                 Implementation plan and checklist
-.streamlit/            Non-secret app configuration and a secrets example
+.streamlit/            Safe app configuration and a non-secret secrets example
 ```
 
 ## Functional requirements
@@ -107,4 +107,3 @@ repository.record_expense(
 - Transfers between bank and cash.
 - Editing or deleting previously recorded transactions.
 - Recurring expenses, budgets by category, and data export.
-

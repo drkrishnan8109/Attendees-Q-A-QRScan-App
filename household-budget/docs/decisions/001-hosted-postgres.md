@@ -16,6 +16,8 @@ The app must preserve household data for six months while running on a free Stre
 
 Use PostgreSQL through SQLAlchemy, with Supabase Free as the documented provider. Use Supabase's session pooler connection string when the deployment network needs IPv4. Keep a SQLite URL as a local-development fallback only.
 
+For PostgreSQL, enable row-level security and revoke table privileges from public API roles because the app connects only through a trusted server-side connection.
+
 ## Alternatives considered
 
 ### SQLite on Streamlit Community Cloud
@@ -39,7 +41,7 @@ Use PostgreSQL through SQLAlchemy, with Supabase Free as the documented provider
 ## Consequences
 
 - The deployed app needs one secret PostgreSQL connection string.
+- Supabase Data API roles cannot read or mutate the budget tables.
 - Local development works immediately with SQLite but is explicitly not a cloud persistence strategy.
 - The free Supabase project may pause after inactivity and does not include automatic backups.
 - Adding multi-user access later will require authentication and per-household authorization.
-
