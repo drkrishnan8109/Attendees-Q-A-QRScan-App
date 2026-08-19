@@ -18,6 +18,7 @@ from sqlalchemy import (
     func,
     insert,
     select,
+    text,
     update,
 )
 from sqlalchemy.engine import Connection, Engine
@@ -80,10 +81,13 @@ class BudgetRepository:
         engine_options: dict = {"pool_pre_ping": True}
         if database_url.startswith("sqlite"):
             engine_options["connect_args"] = {"check_same_thread": False}
+        else:
+            engine_options.update(pool_size=2, max_overflow=1, pool_recycle=300)
         self.engine: Engine = create_engine(database_url, **engine_options)
 
     def create_schema(self) -> None:
         metadata.create_all(self.engine)
+        self._harden_postgres_tables()
 
     def close(self) -> None:
         self.engine.dispose()
@@ -337,6 +341,27 @@ class BudgetRepository:
         if balance is None:
             raise NotInitializedError("Set up the household balances first.")
         return balance
+
+    def _harden_postgres_tables(self) -> None:
+        """Keep direct-connection tables inaccessible through Supabase's public API roles."""
+        if self.engine.dialect.name != "postgresql":
+            return
+
+        with self.engine.begin() as connection:
+            exposed_roles = set(
+                connection.scalars(
+                    text("SELECT rolname FROM pg_roles WHERE rolname IN ('anon', 'authenticated')")
+                )
+            )
+            for table_name in (accounts.name, settings.name, transactions.name):
+                connection.exec_driver_sql(f'ALTER TABLE "{table_name}" ENABLE ROW LEVEL SECURITY')
+                connection.exec_driver_sql(
+                    f'REVOKE ALL PRIVILEGES ON TABLE "{table_name}" FROM PUBLIC'
+                )
+                for role_name in sorted(exposed_roles):
+                    connection.exec_driver_sql(
+                        f'REVOKE ALL PRIVILEGES ON TABLE "{table_name}" FROM "{role_name}"'
+                    )
 
     @staticmethod
     def _validate_account(account: Account) -> Account:
